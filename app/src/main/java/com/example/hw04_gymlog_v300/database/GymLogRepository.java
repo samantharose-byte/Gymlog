@@ -3,6 +3,8 @@ package com.example.hw04_gymlog_v300.database;
 import android.app.Application;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.hw04_gymlog_v300.database.entities.GymLog;
 import com.example.hw04_gymlog_v300.MainActivity;
 import com.example.hw04_gymlog_v300.database.entities.User;
@@ -19,7 +21,7 @@ public class GymLogRepository {
 
     private static GymLogRepository repository;
 
-    private GymLogRepository(Application application){
+    private GymLogRepository(Application application) {
         GymLogDatabase db = GymLogDatabase.getDatabase(application);
         this.gymLogDAO = db.gymLogDAO();
         this.userDAO = db.userDAO();
@@ -27,8 +29,8 @@ public class GymLogRepository {
 
     }
 
-    public static GymLogRepository getRepository(Application application){
-        if(repository != null){
+    public static GymLogRepository getRepository(Application application) {
+        if (repository != null) {
             return repository;
         }
         Future<GymLogRepository> future = GymLogDatabase.databaseWriteExecutor.submit(
@@ -39,7 +41,7 @@ public class GymLogRepository {
                     }
                 }
         );
-        try{
+        try {
             return future.get();
         } catch (InterruptedException | ExecutionException e) {
             Log.d(MainActivity.TAG, "Problem getting GymLogRepository, threat error.");
@@ -47,7 +49,7 @@ public class GymLogRepository {
         return null;
     }
 
-    public ArrayList<GymLog> getAlllogs(){
+    public ArrayList<GymLog> getAlllogs() {
         Future<ArrayList<GymLog>> future = GymLogDatabase.databaseWriteExecutor.submit(
                 new Callable<ArrayList<GymLog>>() {
                     @Override
@@ -56,42 +58,49 @@ public class GymLogRepository {
                     }
                 }
         );
-        try{
+        try {
             return future.get();
-        }catch(InterruptedException | ExecutionException e){
+        } catch (InterruptedException | ExecutionException e) {
             Log.i(MainActivity.TAG, "Problem when getting all GymLogs in the repository");
         }
         return null;
     }
 
-    public void insertGymLog(GymLog gymLog){
+    public void insertGymLog(GymLog gymLog) {
         GymLogDatabase.databaseWriteExecutor.execute(() ->
                 gymLogDAO.insert(gymLog)
-                );
+        );
     }
 
-    public void insertUser(User... user){
+    public void insertUser(User... user) {
         GymLogDatabase.databaseWriteExecutor.execute(() ->
                 userDAO.insert(user)
         );
     }
 
-    public User getUserByUserName(String username) {
-        Future<User> future = GymLogDatabase.databaseWriteExecutor.submit(
-                new Callable<User>() {
+    public LiveData<User> getUserByUserName(String username) {
+        return userDAO.getUserByUserName(username);
+    }
+
+    public LiveData<User> getUserByUserId(int userId) {
+        return userDAO.getUserByUserId(userId);
+    }
+
+    public ArrayList<GymLog> getAlllogsByUserId(int loggedInUserId) {
+        Future<ArrayList<GymLog>> future = GymLogDatabase.databaseWriteExecutor.submit(
+                new Callable<ArrayList<GymLog>>() {
                     @Override
-                    public User call() throws Exception {
-                        return UserDAO.getUserByUserName(username);
+                    public ArrayList<GymLog> call() throws Exception {
+                        return (ArrayList<GymLog>) gymLogDAO.getRecordsetUserId(loggedInUserId);
                     }
                 }
         );
-
-        try{
-            future.get();
-        }catch(InterruptedException | ExecutionException e){
-            Log.i(MainActivity.TAG, "Problem when getting user by username");
+        try {
+            return future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            Log.i(MainActivity.TAG, "Problem when getting all GymLogs in the repository");
         }
-
+        return null;
     }
 }
 

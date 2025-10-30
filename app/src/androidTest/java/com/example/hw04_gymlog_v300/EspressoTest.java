@@ -13,6 +13,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
+import android.os.SystemClock;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -28,6 +29,8 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -49,6 +52,7 @@ public class EspressoTest {
                                 1),
                         isDisplayed()));
         appCompatEditText.perform(replaceText("admin1"), closeSoftKeyboard());
+        SystemClock.sleep(1000);
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.passwordLoginEditText),
@@ -60,6 +64,7 @@ public class EspressoTest {
                                 2),
                         isDisplayed()));
         appCompatEditText2.perform(replaceText("admin1"), closeSoftKeyboard());
+        SystemClock.sleep(1000);
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.loginButton), withText("Login!"),
@@ -71,6 +76,7 @@ public class EspressoTest {
                                 3),
                         isDisplayed()));
         appCompatButton.perform(click());
+        SystemClock.sleep(1000);
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.exerciseInputEditText),
@@ -81,7 +87,8 @@ public class EspressoTest {
                                                 0)),
                                 2),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("idk"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("testing"), closeSoftKeyboard());
+        SystemClock.sleep(1000);
 
         ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.weightInputEditText),
@@ -92,7 +99,8 @@ public class EspressoTest {
                                                 0)),
                                 4),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("123"), closeSoftKeyboard());
+        appCompatEditText4.perform(replaceText("420"), closeSoftKeyboard());
+        SystemClock.sleep(1000);
 
         ViewInteraction appCompatEditText5 = onView(
                 allOf(withId(R.id.repInputEditText),
@@ -103,7 +111,8 @@ public class EspressoTest {
                                                 0)),
                                 6),
                         isDisplayed()));
-        appCompatEditText5.perform(replaceText("321"), closeSoftKeyboard());
+        appCompatEditText5.perform(replaceText("5000"), closeSoftKeyboard());
+        SystemClock.sleep(1000);
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.logButton), withText("Log!"),
@@ -115,6 +124,7 @@ public class EspressoTest {
                                 7),
                         isDisplayed()));
         appCompatButton2.perform(click());
+        SystemClock.sleep(1000);
 
         ViewInteraction actionMenuItemView = onView(
                 allOf(withId(R.id.logoutMenuItem), withText("admin1"),
@@ -125,6 +135,7 @@ public class EspressoTest {
                                 0),
                         isDisplayed()));
         actionMenuItemView.perform(click());
+        SystemClock.sleep(1000);
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(android.R.id.button1), withText("Logout"),
@@ -134,6 +145,7 @@ public class EspressoTest {
                                         0),
                                 3)));
         appCompatButton3.perform(scrollTo(), click());
+        SystemClock.sleep(1000);
 
         ViewInteraction appCompatEditText6 = onView(
                 allOf(withId(R.id.userNameLoginEditText),
@@ -145,6 +157,7 @@ public class EspressoTest {
                                 1),
                         isDisplayed()));
         appCompatEditText6.perform(replaceText("admin1"), closeSoftKeyboard());
+        SystemClock.sleep(1000);
 
         ViewInteraction appCompatEditText7 = onView(
                 allOf(withId(R.id.passwordLoginEditText),
@@ -156,6 +169,7 @@ public class EspressoTest {
                                 2),
                         isDisplayed()));
         appCompatEditText7.perform(replaceText("admin1"), closeSoftKeyboard());
+        SystemClock.sleep(1000);
 
         ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.loginButton), withText("Login!"),
@@ -167,6 +181,7 @@ public class EspressoTest {
                                 3),
                         isDisplayed()));
         appCompatButton4.perform(click());
+        SystemClock.sleep(1000000);
     }
 
     private static Matcher<View> childAtPosition(
